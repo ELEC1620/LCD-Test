@@ -10,7 +10,6 @@
 
 #include "mbed.h"
 #include "N5110.h"
-#include <string>
 
 //Pin assignment format:  lcd(IO, Ser_TX, Ser_RX, MOSI, SCLK, PWM)  
 N5110 lcd(PC_7, PA_9, PB_10, PB_5, PB_3, PA_10);
