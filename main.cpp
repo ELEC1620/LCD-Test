@@ -23,6 +23,7 @@ const int Fish[4][9]= {
 
 int main(){
     lcd.init();                 //initialise LCD
+    lcd.setContrast(0.4);      //set contrast to 40%
     lcd.setBrightness(0.5);     //set brightness to 50% (utilises the PWM)
 
     lcd.clear();
