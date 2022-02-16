@@ -5,7 +5,7 @@
 *   to the upper left hand corner of each image.
 *
 *   Required library: N5110
-*   Author: Andrew Knowles 2021
+*   Author: Andrew Knowles 2021. Modified Feb 2022 by Dr Tim Amsdon
 */
 
 #include "mbed.h"
@@ -22,8 +22,8 @@ const int Fish[4][9]= {
 };
 
 int main(){
-    lcd.init();                 //initialise LCD
-    lcd.setContrast(0.4);      //set contrast to 40%
+    lcd.init(LPH7366_1);        //initialise for LPH7366-1 LCD (Options are LPH7366_1 and LPH7366_6)
+    lcd.setContrast(0.55);      //set contrast to 55%
     lcd.setBrightness(0.5);     //set brightness to 50% (utilises the PWM)
 
     lcd.clear();
