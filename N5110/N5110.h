@@ -9,6 +9,7 @@
 *   Revision 1.3
 *   Author: Craig A. Evans 7th February 2017
 *   Editied by: Andrew Knowles 2021
+*   Update by: Dr Tim Amsdon Feb 2022 -> Added SPI Mode selection required for different LCD variants
 */
 
 #ifndef N5110_H
@@ -26,6 +27,12 @@ enum FillType {
     FILL_TRANSPARENT, ///< Transparent with outline
     FILL_BLACK,       ///< Filled black
     FILL_WHITE,       ///< Filled white (no outline)
+};
+
+/// Nokia 5510 LCD types -> Added by Dr Tim Amsdon Feb 2022
+enum LCD_Type {
+    LPH7366_6, ///< Nokia 5510 part no. LPH7366-6 (check back of LCD module) uses SPI Mode 1
+    LPH7366_1, ///< Nokia 5510 part no. LPH7366-1 (check back of LCD module) uses SPI Mode 0
 };
 
 class N5110{
@@ -64,8 +71,9 @@ public:
 
     /* Initialise display
     *   Powers up the display and turns on backlight (50% brightness default).
-    *   Sets the display up in horizontal addressing mode and with normal video mode.*/
-    void init();
+    *   Sets the display up in horizontal addressing mode and with normal video mode.
+    *   LCD type is passed to enable SPI mode modification -> functionality added byt Dr Tim Amsdon Feb 2022*/
+    void init(LCD_Type const lcd);
 
     /* Turn off
     *   Powers down the display and turns of the backlight.
@@ -189,7 +197,7 @@ private:
 // methods
     void setXYAddress(unsigned int const x,
                       unsigned int const y);
-    void initSPI();
+    void initSPI(LCD_Type const lcd); // LCD type is passed to enable SPI mode modification -> functionality added byt Dr Tim Amsdon Feb 2022
     void turnOn();
     void reset();
     void clearRAM();
