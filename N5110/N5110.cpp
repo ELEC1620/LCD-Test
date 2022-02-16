@@ -4,6 +4,7 @@
 // overloaded constructor includes power pin - LCD Vcc connected to GPIO pin
 // this constructor works fine with LPC1768 - enough current sourced from GPIO
 // to power LCD. Doesn't work well with K64F.
+//LCD type is passed to the init and initspi functions to enable SPI mode modification -> functionality added byt Dr Tim Amsdon Feb 2022
 N5110::N5110(PinName const pwrPin,
              PinName const scePin,
              PinName const rstPin,
@@ -52,10 +53,11 @@ N5110::~N5110(){
 }
 
 // initialise function - powers up and sends the initialisation commands
-void N5110::init(){
+//LCD type is passed to enable SPI mode modification -> functionality added byt Dr Tim Amsdon Feb 2022
+void N5110::init(LCD_Type const lcd){
     turnOn();               // power up
     reset();                // reset LCD - must be done within 100 ms
-    initSPI();    
+    initSPI(lcd);    
     setContrast(0.55);      // this may need tuning (say 0.4 to 0.6)
     setBias(3);             // datasheet - 48:1 mux - don't mess with if you don't know what you're doing! (0 to 7)
     setTempCoefficient(0);  // datasheet - may need increasing (range 0 to 3) at very low temperatures
@@ -175,8 +177,15 @@ void N5110::reset(){
 }
 
 // function to initialise SPI peripheral
-void N5110::initSPI(){
-    _spi->format(8,1);          // 8 bits, Mode 1 - polarity 0, phase 1 - base value of clock is 0, data captured on falling edge/propagated on rising edge
+//LCD type is passed to enable SPI mode modification -> functionality added byt Dr Tim Amsdon Feb 2022
+void N5110::initSPI(LCD_Type const lcd){
+    if (lcd == LPH7366_1) {
+    // works with Nokia 5510 with part number LPH7366-1
+    _spi->format(8,0);          // 8 bits, Mode 0 - polarity 0, phase 1 - base value of clock is 0, data captured on falling edge/propagated on rising edge
+    } else { 
+    // works with Nokia 5510 with part number LPH7366-6
+    _spi->format(8,1);          // 8 bits, Mode 1 - polarity 1, phase 1 - base value of clock is 0, data captured on falling edge/propagated on rising edge    
+    }
     _spi->frequency(4000000);   // maximum of screen is 4 MHz
 }
 
